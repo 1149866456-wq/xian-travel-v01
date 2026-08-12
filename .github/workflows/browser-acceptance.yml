@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      BASE_URL: https://xian-travel-v0111-q9nsg8uoj-swanky-53fertile-4152s-projects.vercel.app
+      BASE_URL: https://xian-travel-v0111.vercel.app
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

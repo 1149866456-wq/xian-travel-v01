@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/browser-acceptance.yml"
+      - "tests/final-browser-acceptance.mjs"
   workflow_dispatch:
 
 jobs:

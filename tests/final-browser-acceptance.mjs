@@ -28,7 +28,7 @@ try {
     throw new Error(`Attribution lost on Trip URL: ${page.url()}`);
   }
 
-  await page.getByRole("link", { name: "Book Now", exact: true }).click();
+  await page.getByRole("complementary").getByRole("link", { name: "Book Now", exact: true }).click();
   await page.waitForURL(/\/booking/, { timeout: 30_000 });
   url = new URL(page.url());
   if (url.searchParams.get("utm_source") !== utmSource || url.searchParams.get("ref") !== refCode) {

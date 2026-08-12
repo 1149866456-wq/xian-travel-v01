@@ -1,0 +1,39 @@
+name: Final Browser Acceptance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/browser-acceptance.yml"
+  workflow_dispatch:
+
+jobs:
+  browser-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BASE_URL: https://xian-travel-v0111-q9nsg8uoj-swanky-53fertile-4152s-projects.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install app dependencies
+        run: npm install
+      - name: Install Playwright
+        run: npm install --no-save @playwright/test@1.54.2
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run real browser acceptance
+        run: node tests/final-browser-acceptance.mjs
+      - name: Upload acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-browser-acceptance-evidence
+          path: |
+            final-acceptance-success.png
+            final-acceptance-failure.png
+            final-acceptance-result.json
+          if-no-files-found: ignore
+          retention-days: 7

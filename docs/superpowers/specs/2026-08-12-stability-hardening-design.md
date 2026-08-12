@@ -52,7 +52,7 @@ This approach keeps the current Route Handler and server-only Supabase REST arch
 
 `POST /api/bookings` will process requests in this order:
 
-1. Require `POST`, `application/json`, and an allowed same-origin request.
+1. Require `POST`, `application/json`, and an explicit allowed same-origin `Origin`; browser-external requests without `Origin` are rejected.
 2. Reject a declared or actually read body larger than 16 KiB.
 3. Derive the client IP from Vercel's overwritten `x-forwarded-for` header. In local tests, inject an explicit test IP through the handler dependency boundary rather than trusting a public header.
 4. HMAC the IP with a server-only `RATE_LIMIT_HASH_SECRET`; never store or log the raw IP.
@@ -65,7 +65,7 @@ This approach keeps the current Route Handler and server-only Supabase REST arch
 11. Skip notifications for test bookings. For real bookings, attempt one Feishu group-robot notification.
 12. Return the stable booking reference and time-limited success URL.
 
-The default application limit is 10 booking attempts per HMACed IP per rolling ten-minute bucket. A rejected request returns HTTP 429 with `Retry-After`; logs contain only the event, request ID, hashed rate-limit key prefix, and decision.
+The default application limit is 10 booking attempts per HMACed IP per fixed ten-minute window. A rejected request returns HTTP 429 with `Retry-After`; logs contain only the event, request ID, hashed rate-limit key prefix, and decision.
 
 ## 5. Input Contract
 
@@ -133,7 +133,8 @@ Before applying the hardening migration, query existing data for constraint comp
 The Supabase REST wrapper receives a typed request policy:
 
 - booking writes: 8-second timeout, zero automatic retries;
-- safe token/rate-limit reads: 5-second timeout, at most one retry;
+- safe idempotency/success-token reads: 5-second timeout, at most one retry;
+- rate-limit consumption RPC: 5-second timeout, zero retries because it mutates the counter;
 - retry only network errors, timeouts, HTTP 408, 429, and HTTP 5xx;
 - use a short bounded delay and honor a small valid `Retry-After` value;
 - never retry non-idempotent writes;
@@ -163,11 +164,11 @@ The call has a five-second timeout and no automatic retry to avoid duplicate gro
 
 Test bookings receive `SKIPPED` without calling Feishu. Legacy rows receive `SKIPPED` with a migration comment explaining that no historical notification was attempted.
 
-When `VERCEL_ENV=production`, a prebuild configuration check fails if the webhook is missing or not a valid Feishu webhook URL. Preview and local builds may omit it; runtime logs then report `notification_unconfigured`, and Preview acceptance uses test bookings that intentionally skip notifications.
+When `VERCEL_ENV=production`, a prebuild configuration check fails if the webhook is missing or not a valid Feishu webhook URL. Preview and local builds may omit it; a real booking in those environments remains saved but receives `FAILED`/`NOTIFICATION_UNCONFIGURED`, runtime logs report `notification_unconfigured`, and Preview acceptance uses test bookings that intentionally skip notifications.
 
 ## 10. WhatsApp Fail-Fast Behavior
 
-Remove all placeholder-number fallbacks. A single server-only configuration helper validates `NEXT_PUBLIC_WHATSAPP_NUMBER` after normalization.
+Remove all placeholder-number fallbacks. A single server-side configuration helper validates `NEXT_PUBLIC_WHATSAPP_NUMBER` after normalization.
 
 When `VERCEL_ENV=production`, the prebuild check fails if the number is missing or invalid. In local and Preview environments, pages render without a WhatsApp link and show a visible "WhatsApp is temporarily unavailable" contact state. No CTA may point to a fabricated number.
 
@@ -203,7 +204,7 @@ Tests cover initial capture, ordinary navigation through Header `Book Now`, cook
 
 The repository-contained protection consists of:
 
-- strict method/content type/origin rules;
+- strict method/content type/origin rules, including rejection of a missing `Origin`;
 - 16 KiB body limit based on both header and actual bytes;
 - bounded schema validation and unknown-key rejection;
 - an off-screen, accessibility-safe honeypot field;
@@ -276,7 +277,7 @@ Browser acceptance runs when any of these change:
 - `next.config.ts`;
 - the browser workflow itself.
 
-It targets the Vercel Preview corresponding to the current commit, not a fixed production alias. The workflow fails explicitly when the Preview URL or `BOOKING_E2E_SECRET` is unavailable.
+For pull requests it targets the Vercel Preview corresponding to the current commit; for a direct `main` push it targets the Vercel deployment corresponding to that commit. It never uses a fixed production alias. The workflow fails explicitly when the matching deployment URL or `BOOKING_E2E_SECRET` is unavailable.
 
 Playwright uses a dynamic UTC travel date 30 days in the future and covers the complete route on:
 

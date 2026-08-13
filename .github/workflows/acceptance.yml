@@ -3,6 +3,7 @@ name: V0.1 Acceptance Checks
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -14,8 +15,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Lint
         run: npm run lint
       - name: Typecheck
@@ -23,4 +25,4 @@ jobs:
       - name: Tests
         run: npm test
       - name: Next build
-        run: npm run build:next
+        run: npm run build

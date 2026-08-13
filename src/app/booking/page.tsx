@@ -1,8 +1,19 @@
 import { BookingForm } from "@/components/booking-form";
-import { readAttribution, type SearchParams } from "@/lib/attribution";
+import { cookies } from "next/headers";
+import {
+  ATTRIBUTION_COOKIE,
+  decodeAttributionCookie,
+  mergeFirstTouch,
+  readAttribution,
+  type SearchParams,
+} from "@/lib/attribution";
 
 export default async function BookingPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  const attribution = readAttribution(await searchParams);
+  const [params, cookieStore] = await Promise.all([searchParams, cookies()]);
+  const attribution = mergeFirstTouch(
+    decodeAttributionCookie(cookieStore.get(ATTRIBUTION_COOKIE)?.value),
+    readAttribution(params),
+  );
   return (
     <div className="container-page grid gap-10 py-14 lg:grid-cols-[.75fr_1.25fr]">
       <div>

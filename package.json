@@ -2,27 +2,33 @@
   "name": "xian-travel-v01",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
     "dev": "next dev",
-    "build": "npm run lint && npm run typecheck && npm test && npm run build:next",
+    "build": "npm run check:config && npm run lint && npm run typecheck && npm test && npm run build:next",
+    "check:config": "node scripts/check-production-config.mjs",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "node --test --import tsx tests/**/*.test.ts",
+    "test": "node --test --import tsx tests/**/*.test.ts tests/**/*.test.tsx",
+    "test:e2e": "playwright test",
     "build:next": "next build"
   },
   "dependencies": {
-    "next": "16.2.11",
+    "next": "16.3.0",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.62.1",
     "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^22.15.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "eslint": "^9.39.0",
-    "eslint-config-next": "16.2.11",
+    "eslint-config-next": "16.3.0",
     "tailwindcss": "^4.1.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"

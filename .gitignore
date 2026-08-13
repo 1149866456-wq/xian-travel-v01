@@ -5,5 +5,10 @@ out/
 .env.local
 .env.*.local
 .vercel/
+.worktrees/
+supabase/.temp/
+playwright-report/
+test-results/
 *.log
+*.tsbuildinfo
 .DS_Store

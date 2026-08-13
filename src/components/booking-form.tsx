@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Attribution } from "@/lib/attribution";
-import type { BookingErrors, BookingInput } from "@/lib/booking";
+import { BOOKING_LIMITS, type BookingErrors, type BookingInput } from "@/lib/booking";
 
 export function BookingForm({ attribution }: { attribution: Attribution }) {
   const token = useMemo(() => crypto.randomUUID(), []);
@@ -50,6 +50,11 @@ export function BookingForm({ attribution }: { attribution: Attribution }) {
 
   return (
     <form action={submit} className="card grid gap-5 p-6 md:p-8">
+      <div className="absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input id="website" name="website" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <div className="grid gap-5 md:grid-cols-2">
         <div className="field">
           <label htmlFor="travel_date">Travel Date *</label>
@@ -70,12 +75,12 @@ export function BookingForm({ attribution }: { attribution: Attribution }) {
       <div className="grid gap-5 md:grid-cols-2">
         <div className="field">
           <label htmlFor="full_name">Full Name *</label>
-          <input id="full_name" name="full_name" autoComplete="name" required />
+          <input id="full_name" name="full_name" autoComplete="name" maxLength={BOOKING_LIMITS.full_name} required />
           {errors.full_name && <div className="field-error">{errors.full_name}</div>}
         </div>
         <div className="field">
           <label htmlFor="country">Country / Region *</label>
-          <input id="country" name="country" defaultValue="Malaysia" autoComplete="country-name" required />
+          <input id="country" name="country" defaultValue="Malaysia" autoComplete="country-name" maxLength={BOOKING_LIMITS.country} required />
           {errors.country && <div className="field-error">{errors.country}</div>}
         </div>
       </div>
@@ -83,19 +88,19 @@ export function BookingForm({ attribution }: { attribution: Attribution }) {
       <div className="grid gap-5 md:grid-cols-2">
         <div className="field">
           <label htmlFor="whatsapp">WhatsApp *</label>
-          <input id="whatsapp" name="whatsapp" type="tel" autoComplete="tel" placeholder="+60 ..." required />
+          <input id="whatsapp" name="whatsapp" type="tel" inputMode="tel" autoComplete="tel" maxLength={BOOKING_LIMITS.whatsapp} placeholder="+60 ..." required />
           {errors.whatsapp && <div className="field-error">{errors.whatsapp}</div>}
         </div>
         <div className="field">
           <label htmlFor="email">Email *</label>
-          <input id="email" name="email" type="email" autoComplete="email" required />
+          <input id="email" name="email" type="email" autoComplete="email" maxLength={BOOKING_LIMITS.email} required />
           {errors.email && <div className="field-error">{errors.email}</div>}
         </div>
       </div>
 
       <div className="field">
         <label htmlFor="notes">Notes</label>
-        <textarea id="notes" name="notes" rows={4} placeholder="Dietary needs, room preference, arrival details, or anything else we should know." />
+        <textarea id="notes" name="notes" rows={4} maxLength={BOOKING_LIMITS.notes} placeholder="Dietary needs, room preference, arrival details, or anything else we should know." />
       </div>
 
       <div className="rounded-2xl bg-[#f5f1e8] p-4 text-sm leading-6 text-neutral-700">

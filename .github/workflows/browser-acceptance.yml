@@ -1,40 +1,75 @@
-name: Final Browser Acceptance
+name: Browser Acceptance
 
 on:
   push:
     branches: [main]
     paths:
       - ".github/workflows/browser-acceptance.yml"
-      - "tests/final-browser-acceptance.mjs"
+      - "src/app/**"
+      - "src/components/**"
+      - "src/lib/**"
+      - "src/proxy.ts"
+      - "supabase/migrations/**"
+      - "tests/**"
+      - "scripts/resolve-vercel-preview.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - "playwright.config.ts"
+      - "next.config.ts"
+  pull_request:
+    paths:
+      - ".github/workflows/browser-acceptance.yml"
+      - "src/app/**"
+      - "src/components/**"
+      - "src/lib/**"
+      - "src/proxy.ts"
+      - "supabase/migrations/**"
+      - "tests/**"
+      - "scripts/resolve-vercel-preview.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - "playwright.config.ts"
+      - "next.config.ts"
   workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: read
 
 jobs:
   browser-acceptance:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env:
-      BASE_URL: https://xian-travel-v0111.vercel.app
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Install app dependencies
-        run: npm install
-      - name: Install Playwright
-        run: npm install --no-save @playwright/test@1.54.2
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Resolve matching Vercel deployment
+        id: deployment
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_DEPLOYMENT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/resolve-vercel-preview.mjs
+      - name: Require browser acceptance secret
+        env:
+          BOOKING_E2E_SECRET: ${{ secrets.BOOKING_E2E_SECRET }}
+        run: test -n "$BOOKING_E2E_SECRET" || (echo "BOOKING_E2E_SECRET is required" && exit 1)
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
-      - name: Run real browser acceptance
-        run: node tests/final-browser-acceptance.mjs
+      - name: Run Desktop and Mobile booking acceptance
+        env:
+          BASE_URL: ${{ steps.deployment.outputs.base_url }}
+          BOOKING_E2E_SECRET: ${{ secrets.BOOKING_E2E_SECRET }}
+        run: npm run test:e2e
       - name: Upload acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: final-browser-acceptance-evidence
-          path: |
-            final-acceptance-success.png
-            final-acceptance-failure.png
-            final-acceptance-result.json
+          name: browser-acceptance-evidence
+          path: test-results/booking-evidence-*.json
           if-no-files-found: ignore
           retention-days: 7

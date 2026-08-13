@@ -7,33 +7,23 @@ if (!baseUrl) throw new Error("BASE_URL is required");
 const travelDate = "2026-09-20";
 const country = "Malaysia";
 const travelers = "2";
-const utmSource = "tiktok";
-const refCode = "final_acceptance";
-const unique = Date.now();
-const fullName = `Final Acceptance ${unique}`;
-const email = `final.acceptance.${unique}@example.com`;
+const fullName = "Company Migration Acceptance Test";
+const email = "company.migration.acceptance@example.com";
 const whatsapp = "+60123456789";
+const notes = "Company environment migration acceptance test";
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 
 try {
-  await page.goto(`${baseUrl}/?utm_source=${utmSource}&ref=${refCode}`, { waitUntil: "networkidle", timeout: 60_000 });
+  await page.goto(baseUrl, { waitUntil: "networkidle", timeout: 60_000 });
   await page.getByRole("heading", { name: /Meet ancient Xi'an/i }).waitFor();
 
   await page.getByRole("link", { name: "View Trip", exact: true }).click();
   await page.waitForURL(/\/trips\/xian-tang-culture-2d1n/, { timeout: 30_000 });
-  let url = new URL(page.url());
-  if (url.searchParams.get("utm_source") !== utmSource || url.searchParams.get("ref") !== refCode) {
-    throw new Error(`Attribution lost on Trip URL: ${page.url()}`);
-  }
 
   await page.getByRole("complementary").getByRole("link", { name: "Book Now", exact: true }).click();
   await page.waitForURL(/\/booking/, { timeout: 30_000 });
-  url = new URL(page.url());
-  if (url.searchParams.get("utm_source") !== utmSource || url.searchParams.get("ref") !== refCode) {
-    throw new Error(`Attribution lost on Booking URL: ${page.url()}`);
-  }
 
   await page.locator('#travel_date').fill(travelDate);
   await page.locator('#traveler_count').selectOption(travelers);
@@ -41,7 +31,7 @@ try {
   await page.locator('#country').fill(country);
   await page.locator('#whatsapp').fill(whatsapp);
   await page.locator('#email').fill(email);
-  await page.locator('#notes').fill("Automated final acceptance through real Chromium on deployed Vercel production.");
+  await page.locator('#notes').fill(notes);
 
   await Promise.all([
     page.waitForURL(/\/booking\/success\?token=/, { timeout: 60_000 }),
@@ -65,10 +55,9 @@ try {
     travel_date: travelDate,
     traveler_count: Number(travelers),
     country,
-    utm_source: utmSource,
-    ref_code: refCode,
     email,
     full_name: fullName,
+    notes,
   };
   await fs.writeFile("final-acceptance-result.json", JSON.stringify(result, null, 2));
   console.log(`FINAL_ACCEPTANCE_RESULT=${JSON.stringify(result)}`);

@@ -1,8 +1,8 @@
-name: Final Browser Acceptance
+name: Company Migration Acceptance
 
 on:
   push:
-    branches: [main]
+    branches: [migration-acceptance-20260813]
     paths:
       - ".github/workflows/browser-acceptance.yml"
       - "tests/final-browser-acceptance.mjs"
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      BASE_URL: https://xian-travel-v0111.vercel.app
+      BASE_URL: https://xian-travel-v01-7bieoh2we-w-0355.vercel.app
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,7 +31,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: final-browser-acceptance-evidence
+          name: company-migration-acceptance-evidence
           path: |
             final-acceptance-success.png
             final-acceptance-failure.png

@@ -127,4 +127,3 @@ Avoid gradients as primary page structure, glassmorphism, heavy shadows, excessi
 - Deploy the verified commit to the existing Vercel Production project.
 - Re-run the same browser matrix against Production.
 - Submit one real Production booking request, verify the API response and Success page, confirm request-only copy, and check production logs without modifying the booking architecture or production data outside that single acceptance record.
-

@@ -45,7 +45,7 @@ export default async function TripDetail({ searchParams }: { searchParams: Promi
             </div>
 
             <figure>
-              <div className="image-frame aspect-[4/3] min-h-[420px] lg:min-h-[590px]">
+              <div className="image-frame aspect-[4/3] lg:aspect-auto lg:min-h-[590px]">
                 <Image
                   src="/images/tang-atlas/giant-wild-goose-pagoda.webp"
                   alt="Giant Wild Goose Pagoda and temple courtyard in Xi'an"
@@ -96,7 +96,7 @@ export default async function TripDetail({ searchParams }: { searchParams: Promi
                 title="Arrive, orient, enter the old capital"
                 body="Begin with Xi'an's urban story, the scale of its historic core, street-level detail, and local flavors. The goal is orientation with context, not a race through landmarks."
                 image="/images/tang-atlas/xian-city-wall-hero.webp"
-                alt="Cyclist traveling along Xi'an city wall"
+                alt="View from Xi'an city wall toward the modern city"
                 position="50% 45%"
               />
               <ItineraryDay
@@ -123,12 +123,12 @@ export default async function TripDetail({ searchParams }: { searchParams: Promi
                 />
               </div>
               <div className="p-7 sm:p-10 md:p-12">
-                <p className="eyebrow !text-[var(--gold)]">Experience notes</p>
+                <p className="eyebrow !text-[var(--jade-gold)]">Experience notes</p>
                 <h2 id="highlights-title" className="mt-4 text-4xl font-semibold sm:text-5xl">Highlights</h2>
                 <ul className="mt-8 grid gap-0">
                   {tripInformation.highlights.map((item, index) => (
                     <li className="grid grid-cols-[36px_1fr] gap-3 border-t border-white/15 py-4" key={item}>
-                      <span className="font-[var(--font-display)] text-xl text-[var(--gold)]">0{index + 1}</span>
+                      <span className="font-[var(--font-display)] text-xl text-[var(--jade-gold)]">0{index + 1}</span>
                       <span className="leading-7 text-white/72">{item}</span>
                     </li>
                   ))}
@@ -182,7 +182,7 @@ function ItineraryDay({ day, title, body, image, alt, position, reverse = false 
 }) {
   return (
     <article className="grid gap-7 md:grid-cols-2 md:items-center md:gap-10">
-      <div className={`image-frame aspect-[4/3] min-h-[320px] ${reverse ? "md:order-2" : ""}`}>
+      <div className={`image-frame aspect-[4/3] lg:min-h-[320px] ${reverse ? "md:order-2" : ""}`}>
         <Image src={image} alt={alt} fill sizes="(max-width: 767px) 100vw, 40vw" style={{ objectPosition: position }} />
       </div>
       <div className={reverse ? "md:order-1" : ""}>

@@ -35,10 +35,10 @@ export default async function BookingSuccess({ searchParams }: { searchParams: P
         <div className="overflow-hidden rounded-[28px] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--card-shadow)]">
           <header className="grid gap-8 bg-[var(--jade-dark)] p-7 text-white sm:p-10 md:grid-cols-[1fr_auto] md:items-end md:p-12">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--gold)]">Request received</p>
+              <p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--jade-gold)]">Request received</p>
               <h1 className="mt-4 text-5xl font-semibold tracking-[-.035em] sm:text-6xl">Booking Request Submitted</h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-white/74">This is a booking request confirmation, not a payment confirmation.</p>
-              <p className="mt-2 max-w-2xl leading-7 text-white/60">We&apos;ll review availability for your travel date, confirm what can be included in your final itinerary, and then contact you with pricing and next steps.</p>
+              <p className="mt-2 max-w-2xl leading-7 text-[var(--jade-muted)]">We&apos;ll review availability for your travel date, confirm what can be included in your final itinerary, and then contact you with pricing and next steps.</p>
             </div>
             <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-white/8 text-2xl" aria-hidden="true">✓</div>
           </header>

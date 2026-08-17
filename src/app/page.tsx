@@ -43,7 +43,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             <div className="image-frame min-h-[470px] h-full lg:min-h-[620px]">
               <Image
                 src="/images/tang-atlas/xian-city-wall-hero.webp"
-                alt="Cyclist traveling along Xi'an city wall with the modern city beyond"
+                alt="View from Xi'an city wall toward the modern city beyond"
                 fill
                 priority
                 sizes="(max-width: 1023px) 100vw, 58vw"
@@ -92,10 +92,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
         <div className="container-page">
           <div className="grid gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-end lg:gap-20">
             <div>
-              <p className="eyebrow !text-[var(--gold)]">A cultural journey in three chapters</p>
+              <p className="eyebrow !text-[var(--jade-gold)]">A cultural journey in three chapters</p>
               <h2 className="mt-5 max-w-2xl text-5xl font-semibold tracking-[-.035em] sm:text-6xl">Culture becomes memorable when it has texture.</h2>
             </div>
-            <p className="max-w-xl text-base leading-8 text-white/65 lg:justify-self-end">
+            <p className="max-w-xl text-base leading-8 text-[var(--jade-muted)] lg:justify-self-end">
               Places, objects, food, and stories work together. The result is not a themed checklist, but a clearer way to understand the city around you.
             </p>
           </div>
@@ -125,10 +125,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
             <ol className="grid content-center">
               {culturalChapters.map(([number, title, body]) => (
                 <li className="grid grid-cols-[44px_1fr] gap-4 border-t border-white/15 py-6 sm:grid-cols-[64px_1fr]" key={number}>
-                  <div className="font-[var(--font-display)] text-2xl font-semibold text-[var(--gold)]">{number}</div>
+                  <div className="font-[var(--font-display)] text-2xl font-semibold text-[var(--jade-gold)]">{number}</div>
                   <div>
                     <h3 className="text-3xl font-semibold">{title}</h3>
-                    <p className="mt-3 max-w-xl leading-7 text-white/64">{body}</p>
+                    <p className="mt-3 max-w-xl leading-7 text-[var(--jade-muted)]">{body}</p>
                   </div>
                 </li>
               ))}

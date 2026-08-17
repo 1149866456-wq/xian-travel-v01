@@ -20,7 +20,7 @@ export function Footer() {
           <p className="mt-4 max-w-md text-sm leading-7 text-white/66">
             Thoughtful small-group cultural travel in Xi&apos;an, shaped for international visitors who value context, clarity, and time well spent.
           </p>
-          <div className="mt-8 flex items-center gap-3 text-[.68rem] font-bold uppercase tracking-[.18em] text-white/45">
+          <div className="mt-8 flex items-center gap-3 text-[.68rem] font-bold uppercase tracking-[.18em] text-[var(--jade-muted)]">
             <span className="h-px w-10 bg-[var(--gold)]" />
             Xi&apos;an · China
           </div>
@@ -30,7 +30,7 @@ export function Footer() {
         <FooterGroup title="Information" links={informationLinks} />
       </div>
       <div className="border-t border-white/10">
-        <div className="container-page flex min-h-14 items-center text-xs text-white/45">
+        <div className="container-page flex min-h-14 items-center text-xs text-[var(--jade-muted)]">
           Tang Atlas · Booking requests only; no online payment is taken.
         </div>
       </div>
@@ -41,7 +41,7 @@ export function Footer() {
 function FooterGroup({ title, links }: { title: string; links: Array<{ href: string; label: string }> }) {
   return (
     <nav aria-label={`${title} links`}>
-      <div className="text-[.68rem] font-bold uppercase tracking-[.18em] text-[var(--gold)]">{title}</div>
+      <div className="text-[.68rem] font-bold uppercase tracking-[.18em] text-[var(--jade-gold)]">{title}</div>
       <div className="mt-4 grid gap-1 text-sm text-white/72">
         {links.map((link) => (
           <Link

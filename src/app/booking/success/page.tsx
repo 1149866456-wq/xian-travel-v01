@@ -13,11 +13,12 @@ export default async function BookingSuccess({ searchParams }: { searchParams: P
 
   if (!booking) {
     return (
-      <div className="container-page py-20">
-        <div className="card mx-auto max-w-2xl p-8 text-center">
-          <h1 className="text-3xl font-black">Booking request not found</h1>
-          <p className="mt-4 text-neutral-600">The success link may be incomplete. Please contact us if you already submitted a booking request.</p>
-          <Link className="button-primary mt-6" href="/contact">Contact Us</Link>
+      <div className="container-page py-16 sm:py-24">
+        <div className="mx-auto max-w-2xl border-y border-[var(--line)] py-12 text-center sm:py-16">
+          <p className="eyebrow">Booking request</p>
+          <h1 className="mt-5 text-5xl font-semibold tracking-[-.035em] sm:text-6xl">Booking request not found</h1>
+          <p className="mx-auto mt-5 max-w-xl leading-8 text-[var(--muted)]">The success link may be incomplete. Please contact us if you already submitted a booking request.</p>
+          <Link className="button-primary mt-7" href="/contact">Contact Us</Link>
         </div>
       </div>
     );
@@ -29,28 +30,44 @@ export default async function BookingSuccess({ searchParams }: { searchParams: P
   );
 
   return (
-    <div className="container-page py-20">
-      <div className="card mx-auto max-w-3xl overflow-hidden">
-        <div className="bg-[#275d52] p-8 text-white md:p-10">
-          <div className="text-sm font-bold uppercase tracking-[.16em] text-white/70">Request received</div>
-          <h1 className="mt-3 text-4xl font-black">Booking Request Submitted</h1>
-          <p className="mt-4 text-white/75">This confirms your booking request, not a payment or confirmed reservation.</p>
-          <p className="mt-2 text-white/75">We&apos;ll check availability, your final itinerary and pricing, then contact you using the details above.</p>
-        </div>
-        <div className="grid gap-6 p-8 md:grid-cols-2 md:p-10">
-          <Detail label="Booking Reference" value={booking.booking_reference} />
-          <Detail label="Requested Travel Date" value={booking.travel_date} />
-          <Detail label="Travelers" value={`${booking.traveler_count}`} />
-          <Detail label="Contact" value={`${booking.full_name} · ${booking.email}`} />
-          <div className="md:col-span-2 rounded-2xl bg-[#f6f1e8] p-5">
-            <div className="font-black">What happens next?</div>
-            <p className="mt-2 text-sm leading-6 text-neutral-650">We&apos;ll check availability and review your request. Please keep your booking reference for follow-up. We&apos;ll contact you as soon as we&apos;ve reviewed your trip details.</p>
+    <div className="bg-[var(--paper)] py-12 sm:py-20">
+      <div className="container-page max-w-5xl">
+        <div className="overflow-hidden rounded-[28px] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--card-shadow)]">
+          <header className="grid gap-8 bg-[var(--jade-dark)] p-7 text-white sm:p-10 md:grid-cols-[1fr_auto] md:items-end md:p-12">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--gold)]">Request received</p>
+              <h1 className="mt-4 text-5xl font-semibold tracking-[-.035em] sm:text-6xl">Booking Request Submitted</h1>
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-white/74">This is a booking request confirmation, not a payment confirmation.</p>
+              <p className="mt-2 max-w-2xl leading-7 text-white/60">We&apos;ll review availability for your travel date, confirm what can be included in your final itinerary, and then contact you with pricing and next steps.</p>
+            </div>
+            <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-white/8 text-2xl" aria-hidden="true">✓</div>
+          </header>
+
+          <div className="grid gap-10 p-7 sm:p-10 md:grid-cols-[1.2fr_.8fr] md:p-12">
+            <section aria-labelledby="request-details-title">
+              <div className="flex items-center gap-4">
+                <h2 id="request-details-title" className="text-3xl font-semibold">Request details</h2>
+                <div className="h-px flex-1 bg-[var(--line)]" />
+              </div>
+              <dl className="mt-7 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+                <Detail label="Booking Reference" value={booking.booking_reference} />
+                <Detail label="Requested Travel Date" value={booking.travel_date} />
+                <Detail label="Travelers" value={`${booking.traveler_count}`} />
+                <Detail label="Contact" value={`${booking.full_name} · ${booking.email}`} />
+              </dl>
+            </section>
+
+            <aside className="border-l-2 border-[var(--cinnabar)] bg-[var(--paper)] p-6" aria-labelledby="next-step-title">
+              <p className="eyebrow">Next step</p>
+              <h2 id="next-step-title" className="mt-3 text-3xl font-semibold">What happens next?</h2>
+              <p className="mt-4 text-sm leading-7 text-[var(--muted)]">We&apos;ll review your request and check what&apos;s available for your preferred date. If you follow up, please share your booking reference so we can match your request quickly.</p>
+              {whatsapp ? (
+                <a className="button-primary mt-6 w-full" href={whatsapp} target="_blank" rel="noreferrer">Contact on WhatsApp</a>
+              ) : (
+                <Link className="button-secondary mt-6 w-full" href="/contact">Contact Us</Link>
+              )}
+            </aside>
           </div>
-          {whatsapp ? (
-            <a className="button-primary md:w-fit" href={whatsapp} target="_blank" rel="noreferrer">Contact on WhatsApp</a>
-          ) : (
-            <Link className="button-secondary md:w-fit" href="/contact">Contact Us</Link>
-          )}
         </div>
       </div>
     </div>
@@ -58,5 +75,10 @@ export default async function BookingSuccess({ searchParams }: { searchParams: P
 }
 
 function Detail({ label, value }: { label: string; value: string }) {
-  return <div className="min-w-0"><div className="text-xs font-bold uppercase tracking-[.12em] text-neutral-500">{label}</div><div className="mt-2 break-words font-black text-lg">{value}</div></div>;
+  return (
+    <div className="min-w-0 border-t border-[var(--line)] pt-4">
+      <dt className="text-[.67rem] font-bold uppercase tracking-[.15em] text-[var(--muted)]">{label}</dt>
+      <dd className="mt-2 break-words font-[var(--font-display)] text-2xl font-semibold leading-tight">{value}</dd>
+    </div>
+  );
 }

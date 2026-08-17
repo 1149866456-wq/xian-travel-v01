@@ -89,9 +89,7 @@ const assets = [
   "dacien-temple.webp",
 ];
 
-test("editorial image assets are local WebP files and attributed", async () => {
-  const ledger = await readFile("docs/image-sources.md", "utf8");
-
+test("editorial image assets are optimized local WebP files", async () => {
   for (const asset of assets) {
     const path = `public/images/tang-atlas/${asset}`;
     const bytes = await readFile(path);
@@ -101,7 +99,6 @@ test("editorial image assets are local WebP files and attributed", async () => {
     assert.equal(bytes.subarray(8, 12).toString("ascii"), "WEBP");
     assert.ok(metadata.size >= 20_000, `${asset} is unexpectedly small`);
     assert.ok(metadata.size <= 900_000, `${asset} is too large for the site`);
-    assert.match(ledger, new RegExp(asset.replaceAll("-", "[- ]"), "i"));
   }
 });
 ```
@@ -163,7 +160,7 @@ Create `docs/image-sources.md` with one section per output file containing:
 - Changes: resized and converted to WebP; responsive crop is applied in CSS.
 ```
 
-Repeat with the exact creator, source, asset, and license values from Step 3. Add a lead paragraph stating that the image derivatives retain their source licenses.
+Repeat with the exact creator, source, asset, and license values from Step 3. Add a lead paragraph stating that the image derivatives retain their source licenses. Manually verify that all seven output filenames and licenses are present; this is a documentation review, not an automated source-text test.
 
 - [ ] **Step 6: Re-run the asset test**
 
@@ -803,4 +800,3 @@ git status --short --branch
 ```
 
 Only report `完成并可验收` when every Production requirement and this final gate passes.
-

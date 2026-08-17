@@ -8,9 +8,9 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
       <div>
         <div className="eyebrow">Booking Request</div>
         <h1 className="mt-4 text-5xl font-black tracking-tight">Plan your Xi&apos;an Tang Culture trip.</h1>
-        <p className="mt-5 text-lg leading-8 text-neutral-650">Tell us your preferred date and contact details. We&apos;ll confirm availability, final itinerary, and pricing before any payment.</p>
+        <p className="mt-5 text-lg leading-8 text-neutral-650">Tell us your preferred date and contact details. We&apos;ll confirm availability, final itinerary and pricing before any payment is required.</p>
         <div className="mt-7 rounded-2xl border border-black/10 p-5 text-sm leading-6 text-neutral-650">
-          <strong>Xi&apos;an Tang Culture 2D1N Experience</strong><br />For 2–4 travelers · English-first support
+          <strong>Xi&apos;an Tang Culture 2D1N Experience</strong><br />For 2–4 travelers · English-speaking support available throughout your booking process
         </div>
       </div>
       <BookingForm attribution={attribution} />

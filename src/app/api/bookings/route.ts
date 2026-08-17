@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("booking_submission_failed", error);
     return NextResponse.json(
-      { ok: false, message: "We couldn't submit your booking request. Please try again or contact us on WhatsApp." },
+      { ok: false, message: "We couldn't submit your booking request. Please try again or contact us for help." },
       { status: 500 },
     );
   }

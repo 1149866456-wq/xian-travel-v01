@@ -42,7 +42,7 @@ export function BookingForm({ attribution }: { attribution: Attribution }) {
       }
       window.location.assign(result.successUrl);
     } catch {
-      setMessage("Network error. Please try again or contact us on WhatsApp.");
+      setMessage("Network error. Please try again or contact us for help.");
     } finally {
       setSubmitting(false);
     }
@@ -53,43 +53,43 @@ export function BookingForm({ attribution }: { attribution: Attribution }) {
       <div className="grid gap-5 md:grid-cols-2">
         <div className="field">
           <label htmlFor="travel_date">Travel Date *</label>
-          <input id="travel_date" name="travel_date" type="date" required />
-          {errors.travel_date && <div className="field-error">{errors.travel_date}</div>}
+          <input id="travel_date" name="travel_date" type="date" required aria-invalid={Boolean(errors.travel_date)} aria-describedby={errors.travel_date ? "travel_date-error" : undefined} />
+          {errors.travel_date && <div id="travel_date-error" className="field-error" role="alert">{errors.travel_date}</div>}
         </div>
         <div className="field">
           <label htmlFor="traveler_count">Number of Travelers *</label>
-          <select id="traveler_count" name="traveler_count" defaultValue="2" required>
+          <select id="traveler_count" name="traveler_count" defaultValue="2" required aria-invalid={Boolean(errors.traveler_count)} aria-describedby={errors.traveler_count ? "traveler_count-error" : undefined}>
             <option value="2">2 travelers</option>
             <option value="3">3 travelers</option>
             <option value="4">4 travelers</option>
           </select>
-          {errors.traveler_count && <div className="field-error">{errors.traveler_count}</div>}
+          {errors.traveler_count && <div id="traveler_count-error" className="field-error" role="alert">{errors.traveler_count}</div>}
         </div>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
         <div className="field">
           <label htmlFor="full_name">Full Name *</label>
-          <input id="full_name" name="full_name" autoComplete="name" required />
-          {errors.full_name && <div className="field-error">{errors.full_name}</div>}
+          <input id="full_name" name="full_name" autoComplete="name" required aria-invalid={Boolean(errors.full_name)} aria-describedby={errors.full_name ? "full_name-error" : undefined} />
+          {errors.full_name && <div id="full_name-error" className="field-error" role="alert">{errors.full_name}</div>}
         </div>
         <div className="field">
           <label htmlFor="country">Country / Region *</label>
-          <input id="country" name="country" defaultValue="Malaysia" autoComplete="country-name" required />
-          {errors.country && <div className="field-error">{errors.country}</div>}
+          <input id="country" name="country" defaultValue="Malaysia" autoComplete="country-name" required aria-invalid={Boolean(errors.country)} aria-describedby={errors.country ? "country-error" : undefined} />
+          {errors.country && <div id="country-error" className="field-error" role="alert">{errors.country}</div>}
         </div>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
         <div className="field">
           <label htmlFor="whatsapp">WhatsApp *</label>
-          <input id="whatsapp" name="whatsapp" type="tel" autoComplete="tel" placeholder="+60 ..." required />
-          {errors.whatsapp && <div className="field-error">{errors.whatsapp}</div>}
+          <input id="whatsapp" name="whatsapp" type="tel" autoComplete="tel" placeholder="+60 ..." required aria-invalid={Boolean(errors.whatsapp)} aria-describedby={errors.whatsapp ? "whatsapp-error" : undefined} />
+          {errors.whatsapp && <div id="whatsapp-error" className="field-error" role="alert">{errors.whatsapp}</div>}
         </div>
         <div className="field">
           <label htmlFor="email">Email *</label>
-          <input id="email" name="email" type="email" autoComplete="email" required />
-          {errors.email && <div className="field-error">{errors.email}</div>}
+          <input id="email" name="email" type="email" autoComplete="email" required aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
+          {errors.email && <div id="email-error" className="field-error" role="alert">{errors.email}</div>}
         </div>
       </div>
 
@@ -99,7 +99,7 @@ export function BookingForm({ attribution }: { attribution: Attribution }) {
       </div>
 
       <div className="rounded-2xl bg-[#f5f1e8] p-4 text-sm leading-6 text-neutral-700">
-        Price and payment details are confirmed before payment. Submitting this form sends a booking request; it is not a payment.
+        Submitting this form sends a booking request, not a payment. We&apos;ll confirm availability, final itinerary and pricing before any payment is required.
       </div>
 
       {message && <div role="alert" className="rounded-xl bg-red-50 p-4 text-sm text-red-800">{message}</div>}

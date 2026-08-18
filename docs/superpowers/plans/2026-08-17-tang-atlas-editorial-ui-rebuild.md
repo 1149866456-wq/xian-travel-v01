@@ -731,7 +731,7 @@ git commit -m "test: extend Tang Atlas production acceptance"
 **Interfaces:**
 
 - Consumes: the verified final commit on `main` and the existing GitHub/Vercel integration.
-- Produces: the current Vercel Production deployment at `https://xian-travel-v0111.vercel.app`.
+- Produces: the current Vercel Production deployment at `https://xian-travel-v01-eight.vercel.app`.
 
 - [ ] **Step 1: Review the complete branch diff**
 
@@ -754,7 +754,7 @@ git push origin main
 git rev-parse HEAD
 ```
 
-The existing GitHub/Vercel integration should create the Production deployment for the project serving `xian-travel-v0111.vercel.app`. Do not relink or deploy the separate `xian-travel-v01` project.
+The existing GitHub/Vercel integration should create the Production deployment for the `w-0355/xian-travel-v01` project serving `xian-travel-v01-eight.vercel.app`. Do not relink or treat any other Vercel project as the acceptance target.
 
 - [ ] **Step 3: Wait for and identify the new Production deployment**
 
